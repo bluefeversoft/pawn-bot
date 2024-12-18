@@ -87,8 +87,7 @@ def parse_engine_output(output: str):
         return output
 
 
-def process_engine_line(line):
-    
+def process_engine_line(line):    
     '''
     UCI engines spit out a huge amount of info, try to find the multipv lines and parse them
     '''
@@ -127,7 +126,10 @@ def process_engine_line(line):
 
 
 def on_engine_output(output):
-    # we've had some output. Try to exctract something.
+    '''
+    we've had some output. Try to exctract something.
+    '''
+    
     if "info multipv" in output: 
         complete_depth = process_engine_line(output)
         if complete_depth and len(complete_depth) > 0: # such a hack like this whole thing
@@ -136,7 +138,10 @@ def on_engine_output(output):
 
 
 def process_engine_output():
-    # wait around (forever) for something from the engine.
+    '''
+    wait around (forever) for something from the engine.
+    '''
+    
     while running:
         line = engine_process.stdout.readline()
         if not line:  # Engine might have crashed we can NO LONGER CHEAT DAMMIT
@@ -148,6 +153,7 @@ def start_engine():
     '''
     Better have your path set correctly in the .env file otherwise boom here
     '''
+    
     global engine_process, output_thread, running
 
     if engine_process:
@@ -220,9 +226,13 @@ def moves():
     san_moves = request.json.get("moves")
     if not san_moves or not isinstance(san_moves, list):
         return make_response(error="Invalid input. Please provide a list of SAN moves.", status=HTTPStatus.BAD_REQUEST)
-
-    # this should really be in it's own function. 
-    # It is here due to laziness, I wanted to return the san moves when I was debugging.
+    
+    
+    '''
+    this should really be in it's own function. 
+    It is here due to laziness, I wanted to return the san moves when I was debugging.
+    '''
+    
     try:
         socketio.emit('clear_output')
         lan_moves = convert_san_to_lan(san_moves)
@@ -248,8 +258,6 @@ def status():
     if engine_process:
         return make_response(data={"status": "running"}, status=HTTPStatus.OK)
     return make_response(data={"status": "stopped"}, status=HTTPStatus.OK)
-
-
 
 
 if __name__ == "__main__":
