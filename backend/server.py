@@ -127,6 +127,7 @@ def process_engine_line(line):
 
 
 def on_engine_output(output):
+    # we've had some output. Try to exctract something.
     if "info multipv" in output: 
         complete_depth = process_engine_line(output)
         if complete_depth and len(complete_depth) > 0: # such a hack like this whole thing
@@ -135,17 +136,22 @@ def on_engine_output(output):
 
 
 def process_engine_output():
+    # wait around (forever) for something from the engine.
     while running:
         line = engine_process.stdout.readline()
-        if not line:  # Engine might have crashed we can NO LONGER CHEAT
+        if not line:  # Engine might have crashed we can NO LONGER CHEAT DAMMIT
             break
         on_engine_output(line.strip())
 
 
 def start_engine():   
+    '''
+    Better have your path set correctly in the .env file otherwise boom here
+    '''
     global engine_process, output_thread, running
 
     if engine_process:
+        # like a broken pencil, this - pointless
         raise Exception("Engine already running")
 
     engine_process = subprocess.Popen(
@@ -163,6 +169,7 @@ def start_engine():
 
 
 def stop_engine():
+    
     global engine_process, running, current_depth_buffer, current_depth
 
     if engine_process:
@@ -177,8 +184,8 @@ def stop_engine():
 
 def send_command(command):
     if engine_process:
-        engine_process.stdin.write(command + "\n")
-        engine_process.stdin.flush()
+        engine_process.stdin.write(command + "\n") # all uci commands end in newline
+        engine_process.stdin.flush() # ahem
 
 
 @app.route("/start", methods=["POST"])
@@ -214,6 +221,8 @@ def moves():
     if not san_moves or not isinstance(san_moves, list):
         return make_response(error="Invalid input. Please provide a list of SAN moves.", status=HTTPStatus.BAD_REQUEST)
 
+    # this should really be in it's own function. 
+    # It is here due to laziness, I wanted to return the san moves when I was debugging.
     try:
         socketio.emit('clear_output')
         lan_moves = convert_san_to_lan(san_moves)
