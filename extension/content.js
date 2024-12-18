@@ -62,7 +62,12 @@ let isObservingMoveList = false;
 const socket = io(API_ENDPOINTS.BASE_URL);
 
 
+/* 
+I had Claude make this styleToString() and generateHTML() based on a template I gave it.
+As with most AI stuff, a horrible mess came out, but it saved me time.
 
+If you're eyes are bleeding, I'm with you
+*/
 const styleToString = (style) => 
     Object.entries(style)
         .map(([key, value]) => `${key.replace(/([A-Z])/g, '-$1').toLowerCase()}: ${value}`)
