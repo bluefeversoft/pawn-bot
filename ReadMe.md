@@ -3,7 +3,7 @@
 > *Disclaimer: This repository exists purely to demonstrate the simplicity of chess automation, challenging claims about "sophisticated" detection systems. Please use this knowledge responsibly, or don't - It's not my problem.*
 
 ## Introduction
-This is the companion code to the YouTube video [https://youtu.be/Uu-GQD_P2lE] where we explore how embarrassingly simple it is to automate chess moves online. If you're here to lecture about code quality, please note that my inbox is already full of strongly-worded emails about proper documentation practices. It is quick and dirty, simply a demo
+This is the companion code to the YouTube video [https://youtu.be/S--1kgug2lw] where we explore how embarrassingly simple it is to automate chess moves online. If you're here to lecture about code quality, please note that my inbox is already full of strongly-worded emails about proper documentation practices. It is quick and dirty, simply a demo
 
 ## Prerequisites
 
